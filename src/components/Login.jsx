@@ -1,10 +1,15 @@
 import React, { useState } from "react";
-import { URL } from "../utils/constants";
+import { URL } from "../utils/constants.js";
 import axios from "axios";
+import { useDispatch } from "react-redux";
+import { addUser } from "../utils/userSlice.js";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [email, setEmail] = useState("tom@gmail.com");
   const [password, setPassword] = useState("Thomas@123");
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const loginHnadler = async () => {
     try {
@@ -16,7 +21,8 @@ const Login = () => {
         },
         { withCredentials: true }
       );
-      console.log("response : ", res?.data);
+      dispatch(addUser(res.data.data));
+      navigate("/")
     } catch (e) {
       console.log(e.message);
     }
