@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { URL } from "../utils/constants.js";
+import { BASE_URL } from "../utils/constants.js";
 import axios from "axios";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addUser } from "../utils/userSlice.js";
 import { useNavigate } from "react-router-dom";
 
@@ -10,11 +10,13 @@ const Login = () => {
   const [password, setPassword] = useState("Thomas@123");
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const isUser = useSelector((store) => store.user);
+  
 
   const loginHnadler = async () => {
     try {
       const res = await axios.post(
-        URL + "login",
+        BASE_URL + "login",
         {
           email,
           password,
@@ -22,11 +24,14 @@ const Login = () => {
         { withCredentials: true }
       );
       dispatch(addUser(res.data.data));
-      navigate("/")
+      navigate("/");
     } catch (e) {
       console.log(e.message);
     }
   };
+  if (isUser) {
+    navigate("/");
+  }
   return (
     <div>
       <div className="relative flex flex-col justify-center h-screen overflow-hidden">

@@ -1,9 +1,18 @@
-import React from 'react'
+import React, { useEffect } from "react";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const Feed = () => {
-  return (
-    <div>Feed</div>
-  )
-}
+  const isUser = useSelector((store) => store.user);
+  const navigate = useNavigate();
 
-export default Feed
+  useEffect(() => {
+    if (!isUser) {
+      navigate("/login");
+    }
+  }, []);
+
+  return <div>Feed</div>;
+};
+
+export default Feed;
