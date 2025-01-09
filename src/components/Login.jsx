@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 const Login = () => {
   const [email, setEmail] = useState("tom@gmail.com");
   const [password, setPassword] = useState("Thomas@123");
+  const [ error, setError ] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const isUser = useSelector((store) => store.user);
@@ -26,7 +27,7 @@ const Login = () => {
       dispatch(addUser(res.data.data));
       navigate("/");
     } catch (e) {
-      console.log(e.message);
+      setError(e.response.data)
     }
   };
   if (isUser) {
@@ -40,7 +41,7 @@ const Login = () => {
           onSubmit={(e) => e.preventDefault()}
         >
           <h1 className="text-3xl font-semibold text-center text-purple-700">
-            Create Account
+            Login
           </h1>
           <form className="space-y-4">
             <div>
@@ -73,7 +74,8 @@ const Login = () => {
             >
               Forget Password?
             </a>
-            <div className="justify-center">
+            {error && <p className="text-red-500">{error}</p>}
+            <div className="justify-center flex">
               <button className="btn btn-primary" onClick={loginHnadler}>
                 Login
               </button>
