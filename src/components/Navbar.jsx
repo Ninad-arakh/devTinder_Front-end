@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { BASE_URL } from "../utils/constants";
 import axios from "axios";
 import { removeUser } from "../utils/userSlice";
+import tinder from "../../icons-tinder.png";
 
 const Navbar = () => {
   const user = useSelector((store) => store.user);
@@ -23,10 +24,12 @@ const Navbar = () => {
       console.log(err);
     }
   };
+
   return (
     <div className="navbar bg-base-200">
       <div className="flex-1">
         <Link to="/" className="btn btn-ghost text-xl text-red-400">
+          <img src={tinder} className=" w-6" />
           DevTinder
         </Link>
       </div>

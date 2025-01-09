@@ -26,14 +26,14 @@ const Requests = () => {
   };
 
   useEffect(() => {
-    getRequests();
+    if (!req) getRequests();
   }, []);
 
   if (!req) return;
 
   if (req.length === 0) {
     return (
-      <div className="flex justify-center border border-white mt-4">
+      <div className="flex justify-center  mt-4">
         <h2>You don't have any requests yet!</h2>
       </div>
     );

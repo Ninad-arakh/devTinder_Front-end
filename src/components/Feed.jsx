@@ -13,7 +13,7 @@ const Feed = () => {
   const feed = useSelector((store) => store.feed);
 
   const getfeed = async () => {
-    if(feed) return;
+    if (feed) return;
     const res = await axios.get(BASE_URL + "feed", { withCredentials: true });
     dispatch(addToFeed(res.data.users));
   };
@@ -22,13 +22,23 @@ const Feed = () => {
     if (!isUser) {
       navigate("/login");
     }
-    getfeed();
+    if (!feed) getfeed();
   }, []);
+
+  if (!feed) return;
+
+  if (feed.length === 0) {
+    return (
+      <div className="flex justify-center  mt-4">
+        <h2>No more peoples are on this platform yet!</h2>
+      </div>
+    );
+  }
 
   return (
     feed && (
       <div>
-        <UserCard user={feed[0]}/>
+        <UserCard user={feed[0]} />
       </div>
     )
   );

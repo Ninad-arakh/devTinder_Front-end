@@ -6,13 +6,12 @@ import { addUser } from "../utils/userSlice.js";
 import { useNavigate } from "react-router-dom";
 
 const Login = () => {
-  const [email, setEmail] = useState("tom@gmail.com");
-  const [password, setPassword] = useState("Thomas@123");
-  const [ error, setError ] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const isUser = useSelector((store) => store.user);
-  
 
   const loginHnadler = async () => {
     try {
@@ -27,50 +26,54 @@ const Login = () => {
       dispatch(addUser(res.data.data));
       navigate("/");
     } catch (e) {
-      setError(e.response.data)
+      setError(e.response.data);
     }
   };
   if (isUser) {
     navigate("/");
   }
   return (
-    <div>
+    <div className="bg-gradient-to-tr to-red-400 from-pink-400 ">
       <div className="relative flex flex-col justify-center h-screen overflow-hidden">
         <div
-          className="w-full p-6  m-auto bg-base-200 rounded-md shadow-md lg:max-w-lg"
+          className="w-full p-6  m-auto bg-base-200 bg-opacity-60 rounded-md shadow-md lg:max-w-lg"
           onSubmit={(e) => e.preventDefault()}
         >
-          <h1 className="text-3xl font-semibold text-center text-purple-700">
+          <h1 className="text-3xl font-semibold text-center  text-purple-200">
             Login
           </h1>
           <form className="space-y-4">
             <div>
               <label className="label">
-                <span className="text-base label-text">Email</span>
+                <span className="text-base text-purple-200 label-text">
+                  Email
+                </span>
               </label>
               <input
                 type="text"
                 value={email}
                 placeholder="Email Address"
-                className="w-full input input-bordered input-primary"
+                className="w-full input input-bordered input-primary bg-opacity-70"
                 onChange={(e) => setEmail(e.target.value)}
               />
             </div>
             <div>
               <label className="label">
-                <span className="text-base label-text">Password</span>
+                <span className="text-base text-purple-200 label-text">
+                  Password
+                </span>
               </label>
               <input
                 type="text"
                 value={password}
                 placeholder="Enter Password"
-                className="w-full input input-bordered input-primary"
+                className="w-full input input-bordered input-primary bg-opacity-70"
                 onChange={(e) => setPassword(e.target.value)}
               />
             </div>
             <a
               href="#"
-              className="text-xs text-gray-600 hover:underline hover:text-blue-600"
+              className="text-xs text-white hover:underline hover:text-blue-200"
             >
               Forget Password?
             </a>
