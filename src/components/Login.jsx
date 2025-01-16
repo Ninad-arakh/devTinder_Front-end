@@ -38,7 +38,7 @@ const Login = () => {
   };
 
   const signUpHandler = async () => {
-    try{
+    try {
       const res = await axios.post(
         BASE_URL + "signup",
         { firstName, lastName, email, password },
@@ -52,8 +52,8 @@ const Login = () => {
           setSuccess(false);
         }, 3000);
       }
-    }catch(err){
-      console.log(err)
+    } catch (err) {
+      console.log(err);
       setError(err.response.data);
       setTimeout(() => {
         setError("");
@@ -67,7 +67,7 @@ const Login = () => {
     <div className="bg-gradient-to-tr to-red-400 from-pink-400 ">
       <div className="relative flex flex-col justify-center h-screen overflow-hidden">
         <div
-          className="w-full p-6  m-auto bg-base-200 bg-opacity-60 rounded-md shadow-md lg:max-w-lg"
+          className="w-full p-6  m-auto bg-base-200 bg-opacity-60 rounded-md shadow-md lg:max-w-lg mt-40 md:mt-auto"
           onSubmit={(e) => e.preventDefault()}
         >
           <h1 className="text-3xl font-semibold text-center  text-purple-200">

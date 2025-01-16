@@ -6,11 +6,11 @@ import { useDispatch } from "react-redux";
 import { addUser } from "../utils/userSlice";
 
 const EditProfile = ({ user }) => {
-  const [firstName, setFirstName] = useState(user?.firstName);
-  const [lastName, setLastName] = useState(user?.lastName);
-  const [about, setAbout] = useState(user?.about);
-  const [gender, setGender] = useState(user?.gender);
-  const [photoUrl, setPhotoUrl] = useState(user?.photoUrl);
+  const [firstName, setFirstName] = useState(user?.firstName || "");
+  const [lastName, setLastName] = useState(user?.lastName || "");
+  const [about, setAbout] = useState(user?.about || "");
+  const [gender, setGender] = useState(user?.gender || "");
+  const [photoUrl, setPhotoUrl] = useState(user?.photoUrl || "");
   const [error, setError] = useState("Something went Wrong!");
   const [toastTime, setToastTime] = useState(false);
   const dispatch = useDispatch();
@@ -32,10 +32,14 @@ const EditProfile = ({ user }) => {
       console.log(err);
     }
   };
+
+  const handleGender = (value) => {
+    setGender(value);
+  };
   return (
     <>
-      <div className="flex justify-center ">
-        <div className="relative flex flex-col justify-center h-screen overflow-hidden mx-2">
+      <div className="md:flex justify-center  ">
+        <div className="relative flex flex-col justify-center md:h-screen overflow-hidden mx-2 ">
           <div
             className="w-full p-6  m-auto bg-base-200 mt-2 rounded-md shadow-md lg:max-w-lg border border-fuchsia-900"
             onSubmit={(e) => e.preventDefault()}
@@ -88,10 +92,10 @@ const EditProfile = ({ user }) => {
                   className="dropdown-content menu  rounded-box z-[1] w-52 p-2 shadow"
                 >
                   <li>
-                    <a>Male</a>
+                    <a onClick={() => handleGender("male")}>Male</a>
                   </li>
                   <li>
-                    <a>Female</a>
+                    <a onClick={() => handleGender("female")}>Female</a>
                   </li>
                 </ul>
               </div>
@@ -108,11 +112,13 @@ const EditProfile = ({ user }) => {
           <UserCard user={{ firstName, lastName, about, gender, photoUrl }} />
         </div>
       </div>
-      {(toastTime ) && <div className="toast toast-top toast-center">
-        <div className="alert alert-success">
-          <span>Profile Updated successfully.</span>
+      {toastTime && (
+        <div className="toast toast-top toast-center">
+          <div className="alert alert-success">
+            <span>Profile Updated successfully.</span>
+          </div>
         </div>
-      </div>}
+      )}
     </>
   );
 };

@@ -29,7 +29,7 @@ const Feed = () => {
 
   if (feed.length === 0) {
     return (
-      <div className="flex justify-center  mt-4">
+      <div className="flex justify-center mt-4 ">
         <h2>No more peoples are on this platform yet!</h2>
       </div>
     );

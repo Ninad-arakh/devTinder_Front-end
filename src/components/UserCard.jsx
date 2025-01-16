@@ -20,7 +20,7 @@ const UserCard = ({ user }) => {
   };
   
   return (
-    <div className="flex justify-center m-2 cursor-pointer ">
+    <div className="flex justify-center m-2 cursor-pointer mt-20 md:mt-2">
       <div className="card bg-base-200 w-96 shadow-xl h-[35rem] border border-fuchsia-900">
         <figure>{photoUrl && <img src={photoUrl} alt="userImage" />}</figure>
         <div className="card-body">

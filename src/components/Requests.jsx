@@ -46,7 +46,7 @@ const Requests = () => {
           connection.fromUserId;
         return (
           <div key={_id} className=" flex justify-center ">
-            <div className="flex justify-around bg-base-200 rounded-lg w-6/12 my-2 items-center ">
+            <div className="flex justify-around bg-base-200 rounded-lg md:w-6/12 my-2 items-center ">
               <div>
                 {photoUrl && (
                   <img
