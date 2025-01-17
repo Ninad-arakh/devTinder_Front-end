@@ -45,12 +45,14 @@ const Login = () => {
         { withCredentials: true }
       );
       if (res.status === 200) {
-        setIsLogin(true);
-        setPassword("");
         setSuccess(true);
+
         setTimeout(() => {
           setSuccess(false);
         }, 3000);
+
+        dispatch(addUser(res.data.data));
+        navigate("/profile");
       }
     } catch (err) {
       console.log(err);
@@ -60,8 +62,11 @@ const Login = () => {
       }, 3000);
     }
   };
-  if (isUser) {
-    navigate("/");
+  if (isUser && !isLogin) {
+    navigate("/profile");
+  }
+  else if (isUser){
+    navigate("/")
   }
   return (
     <div className="bg-gradient-to-tr to-red-400 from-pink-400 ">
@@ -143,11 +148,7 @@ const Login = () => {
                 ? "Don't have an account? Register"
                 : "Already a User? Login"}
             </p>
-            {success && (
-              <div className="alert alert-success  text-gray-50 bg-opacity-70">
-                <span>User added successfully, Please Login.</span>
-              </div>
-            )}
+
             {error && <p className="text-red-500">{error}</p>}
             <div className="justify-center flex pt-6">
               <button
@@ -160,6 +161,13 @@ const Login = () => {
           </form>
         </div>
       </div>
+      {success && (
+        <div className="toast toast-top toast-center">
+          <div className="alert alert-success">
+            <span>User added successfully, Please update your.</span>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
