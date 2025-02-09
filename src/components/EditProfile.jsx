@@ -14,12 +14,13 @@ const EditProfile = ({ user }) => {
   const [error, setError] = useState("Something went Wrong!");
   const [toastTime, setToastTime] = useState(false);
   const dispatch = useDispatch();
+  const [file, setFile] = useState(null);
 
   const saveProfile = async () => {
     try {
       const res = await axios.patch(
         BASE_URL + "profile/update",
-        { firstName, lastName, about, gender, photoUrl },
+        { firstName, lastName, about, gender },
         { withCredentials: true }
       );
       dispatch(addUser(res?.data?.data));
@@ -30,6 +31,30 @@ const EditProfile = ({ user }) => {
     } catch (err) {
       setError(err);
       console.log(err);
+    }
+  };
+
+  const uploadImage = async (e) => {
+    e.preventDefault();
+    if (!file) {
+      alert("Please choose a file to upload");
+      return;
+    }
+    const formData = new FormData();
+    formData.append("profileImage", file);
+
+    try {
+      const response = await axios.post(
+        BASE_URL + "profile/uploadImage",
+        formData,
+        {
+          withCredentials: true,
+        }
+      );
+      alert(response.data.message);
+    } catch (error) {
+      console.error("There was an error uploading the file!", error);
+      alert("Error uploading file");
     }
   };
 
@@ -71,13 +96,28 @@ const EditProfile = ({ user }) => {
                 >
                   {about}
                 </textarea>
-                <input
+                {/* <input
                   type="text"
                   value={photoUrl}
                   placeholder="photo Url"
                   className="w-full input input-bordered input-primary my-1"
                   onChange={(e) => setPhotoUrl(e.target.value)}
-                />
+                /> */}
+                <div className="flex">
+                  <input
+                    type="file"
+                    className="file-input file-input-bordered w-full max-w-xs"
+                    name="profileImage"
+                    onChange={(e) => setFile(e?.target?.files[0])}
+                  />
+                  <button
+                    className="btn btn-primary"
+                    encType="multipart/form-data"
+                    onClick={(e) => uploadImage(e)}
+                  >
+                    Upload
+                  </button>
+                </div>
               </div>
               <div className="dropdown dropdown-hover  ">
                 <div

@@ -51,7 +51,7 @@ const Requests = () => {
                 {photoUrl && (
                   <img
                     alt="profile"
-                    src={photoUrl}
+                    src={BASE_URL+photoUrl?.filePath}
                     className="w-32 h-32 rounded-full  "
                   />
                 )}

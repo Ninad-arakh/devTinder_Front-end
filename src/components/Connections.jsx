@@ -42,10 +42,10 @@ const Connections = () => {
           <div key={_id} className=" flex justify-center ">
             <div className="flex justify-around bg-base-200 rounded-lg md:w-6/12 my-2 items-center ">
               <div>
-                {photoUrl && (
+                {photoUrl  && (
                   <img
                     alt="profile"
-                    src={photoUrl}
+                    src={BASE_URL+photoUrl?.filePath}
                     className="w-32 h-32 rounded-full  "
                   />
                 )}

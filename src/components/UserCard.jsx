@@ -18,11 +18,15 @@ const UserCard = ({ user }) => {
     );
     dispatch(removeFromFeed(_id));
   };
-  
+
   return (
     <div className="flex justify-center m-2 cursor-pointer mt-20 md:mt-2">
       <div className="card bg-base-200 w-96 shadow-xl h-[35rem] border border-fuchsia-900">
-        <figure>{photoUrl && <img src={photoUrl} alt="userImage" />}</figure>
+        <figure>
+          {photoUrl && (
+            <img src={BASE_URL + photoUrl?.filePath} alt="userImage" />
+          )}
+        </figure>
         <div className="card-body">
           {firstName && lastName && (
             <h2 className="card-title">{firstName + " " + lastName}</h2>
