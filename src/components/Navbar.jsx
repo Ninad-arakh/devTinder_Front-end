@@ -14,12 +14,14 @@ const Navbar = () => {
   const logoutHandler = async () => {
     try {
       const res = await axios.post(
-        BASE_URL + "logout",
+        BASE_URL + "logout/",
         {},
         { withCredentials: true }
       );
-      navigate("/login");
-      dispatch(removeUser());
+      if(res.status === 200){
+        navigate("/login");
+        dispatch(removeUser());
+      }
     } catch (err) {
       console.log(err);
     }

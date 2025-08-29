@@ -4,6 +4,8 @@ import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { addUser } from "../utils/userSlice.js";
 import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -20,15 +22,17 @@ const Login = () => {
   const loginHnadler = async () => {
     try {
       const res = await axios.post(
-        BASE_URL + "login",
+        BASE_URL + "login/",
         {
           email,
           password,
         },
         { withCredentials: true }
       );
-      dispatch(addUser(res.data.data));
-      navigate("/");
+      if(res.status === 200){
+        dispatch(addUser(res.data.data));
+        navigate("/");
+      }
     } catch (e) {
       setError(e.response.data);
       setTimeout(() => {
@@ -37,10 +41,10 @@ const Login = () => {
     }
   };
 
-  const signUpHandler = async () => {
+  const signUpHandler = async (e) => {
     try {
       const res = await axios.post(
-        BASE_URL + "signup",
+        BASE_URL + "signup/",
         { firstName, lastName, email, password },
         { withCredentials: true }
       );
@@ -55,6 +59,7 @@ const Login = () => {
         navigate("/profile");
       }
     } catch (err) {
+      e.preventDefault();
       console.log(err);
       setError(err.response.data);
       setTimeout(() => {
@@ -70,6 +75,7 @@ const Login = () => {
   }
   return (
     <div className="bg-gradient-to-tr to-red-400 from-pink-400 ">
+      <ToastContainer position="bottom-right" autoClose={3000} />
       <div className="relative flex flex-col justify-center h-screen overflow-hidden">
         <div
           className="w-full p-6  m-auto bg-base-200 bg-opacity-60 rounded-md shadow-md lg:max-w-lg mt-40 md:mt-auto"
@@ -153,7 +159,7 @@ const Login = () => {
             <div className="justify-center flex pt-6">
               <button
                 className="btn btn-primary"
-                onClick={() => (isLogin ? loginHnadler() : signUpHandler())}
+                onClick={(e) => (isLogin ? loginHnadler() : signUpHandler(e))}
               >
                 {isLogin ? "Login" : "SignUp"}
               </button>

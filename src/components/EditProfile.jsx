@@ -4,40 +4,38 @@ import axios from "axios";
 import { BASE_URL } from "../utils/constants";
 import { useDispatch } from "react-redux";
 import { addUser } from "../utils/userSlice";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const EditProfile = ({ user }) => {
   const [firstName, setFirstName] = useState(user?.firstName || "");
   const [lastName, setLastName] = useState(user?.lastName || "");
   const [about, setAbout] = useState(user?.about || "");
   const [gender, setGender] = useState(user?.gender || "");
-  const [photoUrl, setPhotoUrl] = useState(user?.photoUrl || "");
-  const [error, setError] = useState("Something went Wrong!");
-  const [toastTime, setToastTime] = useState(false);
-  const dispatch = useDispatch();
   const [file, setFile] = useState(null);
+  const dispatch = useDispatch();
 
   const saveProfile = async () => {
     try {
       const res = await axios.patch(
-        BASE_URL + "profile/update",
+        BASE_URL + "profile/update/",
         { firstName, lastName, about, gender },
         { withCredentials: true }
       );
-      dispatch(addUser(res?.data?.data));
-      setToastTime(true);
-      setTimeout(() => {
-        setToastTime(false);
-      }, 3000);
+      if (res.status === 200) {
+        dispatch(addUser(res?.data?.data));
+        toast.success("Profile updated successfully!");
+      }
     } catch (err) {
-      setError(err);
-      console.log(err);
+      toast.error("Failed to update profile. Please try again.");
+      console.error(err);
     }
   };
 
   const uploadImage = async (e) => {
     e.preventDefault();
     if (!file) {
-      alert("Please choose a file to upload");
+      toast.error("Please choose a file to upload.");
       return;
     }
     const formData = new FormData();
@@ -45,28 +43,29 @@ const EditProfile = ({ user }) => {
 
     try {
       const response = await axios.post(
-        BASE_URL + "profile/uploadImage",
+        BASE_URL + "profile/uploadImage/",
         formData,
         {
           withCredentials: true,
         }
       );
-      alert(response.data.message);
+      if(response.status === 200 ) toast.success(response.data.message);
     } catch (error) {
+      toast.error("Error uploading file. Please try again.");
       console.error("There was an error uploading the file!", error);
-      alert("Error uploading file");
     }
   };
 
   const handleGender = (value) => {
     setGender(value);
   };
+
   return (
     <>
-      <div className="md:flex justify-center  ">
-        <div className="relative flex flex-col justify-center md:h-screen overflow-hidden mx-2 ">
+      <div className="md:flex justify-center">
+        <div className="relative flex flex-col justify-center md:h-screen overflow-hidden mx-2">
           <div
-            className="w-full p-6  m-auto bg-base-200 mt-2 rounded-md shadow-md lg:max-w-lg border border-fuchsia-900"
+            className="w-full p-6 m-auto bg-base-200 mt-2 rounded-md shadow-md lg:max-w-lg border border-fuchsia-900"
             onSubmit={(e) => e.preventDefault()}
           >
             <h1 className="text-3xl font-semibold text-center text-purple-700 pb-4">
@@ -93,16 +92,7 @@ const EditProfile = ({ user }) => {
                   placeholder="Bio"
                   value={about}
                   onChange={(e) => setAbout(e.target.value)}
-                >
-                  {about}
-                </textarea>
-                {/* <input
-                  type="text"
-                  value={photoUrl}
-                  placeholder="photo Url"
-                  className="w-full input input-bordered input-primary my-1"
-                  onChange={(e) => setPhotoUrl(e.target.value)}
-                /> */}
+                />
                 <div className="flex">
                   <input
                     type="file"
@@ -110,16 +100,18 @@ const EditProfile = ({ user }) => {
                     name="profileImage"
                     onChange={(e) => setFile(e?.target?.files[0])}
                   />
-                  <button
-                    className="btn btn-primary"
-                    encType="multipart/form-data"
-                    onClick={(e) => uploadImage(e)}
-                  >
-                    Upload
-                  </button>
+                  {file && (
+                    <button
+                      className="btn btn-primary"
+                      encType="multipart/form-data"
+                      onClick={(e) => uploadImage(e)}
+                    >
+                      Upload
+                    </button>
+                  )}
                 </div>
               </div>
-              <div className="dropdown dropdown-hover  ">
+              <div className="dropdown dropdown-hover">
                 <div
                   tabIndex={0}
                   role="button"
@@ -129,7 +121,7 @@ const EditProfile = ({ user }) => {
                 </div>
                 <ul
                   tabIndex={0}
-                  className="dropdown-content menu  rounded-box z-[1] w-52 p-2 shadow"
+                  className="dropdown-content menu rounded-box z-[1] w-52 p-2 shadow"
                 >
                   <li>
                     <a onClick={() => handleGender("male")}>Male</a>
@@ -149,16 +141,10 @@ const EditProfile = ({ user }) => {
           </div>
         </div>
         <div className="mx-2">
-          <UserCard user={{ firstName, lastName, about, gender, photoUrl }} />
+          <UserCard user={{ firstName, lastName, about, gender }} />
         </div>
       </div>
-      {toastTime && (
-        <div className="toast toast-top toast-center">
-          <div className="alert alert-success">
-            <span>Profile Updated successfully.</span>
-          </div>
-        </div>
-      )}
+      <ToastContainer position="bottom-right" autoClose={3000} />
     </>
   );
 };

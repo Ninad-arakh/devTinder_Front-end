@@ -9,20 +9,19 @@ const Requests = () => {
   const req = useSelector((store) => store.requests);
 
   const getRequests = async (status, _id) => {
-    const res = await axios.get(BASE_URL + "user/requests/reviewed", {
+    const res = await axios.get(BASE_URL + "user/requests/reviewed/", {
       withCredentials: true,
     });
-    dispatch(addToRequests(res?.data?.data));
-    console.log(res?.data?.data);
+    if(res.status ===200) dispatch(addToRequests(res?.data?.data));
   };
 
   const statusHandler = async (status, _id) => {
     const res = await axios.post(
-      BASE_URL + "request/review/" + status + "/" + _id,
+      BASE_URL + "request/review/" + status + "/" + _id + "/",
       {},
       { withCredentials: true }
     );
-    dispatch(removeRequests(res.data.data));
+    if(res.status === 200) dispatch(removeRequests(res.data.data));
   };
 
   useEffect(() => {

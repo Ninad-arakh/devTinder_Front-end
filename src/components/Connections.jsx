@@ -11,10 +11,10 @@ const Connections = () => {
 
   const fetchConnections = async () => {
     try {
-      const res = await axios.get(BASE_URL + "user/connections", {
+      const res = await axios.get(BASE_URL + "user/connections/", {
         withCredentials: true,
       });
-      dispatch(addToConnections(res?.data?.data));
+      if(res.status === 200 ) dispatch(addToConnections(res?.data?.data));
     } catch (err) {
       console.log(err);
     }

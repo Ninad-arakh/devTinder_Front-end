@@ -11,12 +11,12 @@ const UserCard = ({ user }) => {
   const { firstName, lastName, photoUrl, gender, about } = user;
 
   const handleSendReq = async (status, _id) => {
-    await axios.post(
-      BASE_URL + "request/send/" + status + "/" + _id,
+    const res = await axios.post(
+      BASE_URL + "request/send/" + status + "/" + _id + "/",
       {},
       { withCredentials: true }
     );
-    dispatch(removeFromFeed(_id));
+    if(res.status === 200) dispatch(removeFromFeed(_id));
   };
 
   return (
