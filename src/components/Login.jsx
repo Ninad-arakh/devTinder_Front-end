@@ -10,11 +10,9 @@ import "react-toastify/dist/ReactToastify.css";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [isLogin, setIsLogin] = useState(true);
-  const [success, setSuccess] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const isUser = useSelector((store) => store.user);
@@ -31,13 +29,11 @@ const Login = () => {
       );
       if(res.status === 200){
         dispatch(addUser(res.data.data));
+        toast.success("Login Success")
         navigate("/");
       }
     } catch (e) {
-      setError(e.response.data);
-      setTimeout(() => {
-        setError("");
-      }, 3000);
+      toast.error("Something went wrong ! "+ e.response.data)
     }
   };
 
@@ -49,22 +45,14 @@ const Login = () => {
         { withCredentials: true }
       );
       if (res.status === 200) {
-        setSuccess(true);
-
-        setTimeout(() => {
-          setSuccess(false);
-        }, 3000);
-
+        toast.success("Signup success.")
         dispatch(addUser(res.data.data));
         navigate("/profile");
       }
     } catch (err) {
       e.preventDefault();
       console.log(err);
-      setError(err.response.data);
-      setTimeout(() => {
-        setError("");
-      }, 3000);
+      toast.error("Something went wrong! ")
     }
   };
   if (isUser && !isLogin) {
@@ -155,7 +143,7 @@ const Login = () => {
                 : "Already a User? Login"}
             </p>
 
-            {error && <p className="text-red-500">{error}</p>}
+            {/* {error && <p className="text-red-500">{error}</p>} */}
             <div className="justify-center flex pt-6">
               <button
                 className="btn btn-primary"
@@ -167,13 +155,6 @@ const Login = () => {
           </form>
         </div>
       </div>
-      {success && (
-        <div className="toast toast-top toast-center">
-          <div className="alert alert-success">
-            <span>User added successfully, Please update your.</span>
-          </div>
-        </div>
-      )}
     </div>
   );
 };
