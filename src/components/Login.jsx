@@ -73,7 +73,9 @@ const Login = () => {
       <ToastContainer position="bottom-right" autoClose={3000} />
       <div className="relative flex flex-col justify-center h-screen overflow-hidden">
         <div
-          className={`w-full p-6  m-auto bg-base-200 bg-opacity-60 rounded-md shadow-md lg:max-w-lg ${isScreen ? "mt-0" : "mt-25"} `}
+          className={`w-full p-6  m-auto bg-base-200 bg-opacity-60 rounded-md shadow-md lg:max-w-lg ${
+            isScreen ? (isLogin ? `mt-16` : `mt-0`) : `mt-25"`
+          } `}
           onSubmit={(e) => e.preventDefault()}
         >
           <h1 className="text-3xl font-semibold text-center  text-purple-200">
