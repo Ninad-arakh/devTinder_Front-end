@@ -12,10 +12,15 @@ const EditProfile = ({ user }) => {
   const [lastName, setLastName] = useState(user?.lastName || "");
   const [about, setAbout] = useState(user?.about || "");
   const [gender, setGender] = useState(user?.gender || "");
-  const [file, setFile] = useState(null);
+  const [file, setFile] = useState(user?.photoUrl || "");
+  const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingP, setIsLoadingP] = useState(false);
   const dispatch = useDispatch();
 
+  // console.log("user : ", user )
+
   const saveProfile = async () => {
+    setIsLoadingP(true)
     try {
       const res = await axios.patch(
         BASE_URL + "profile/update/",
@@ -25,14 +30,17 @@ const EditProfile = ({ user }) => {
       if (res.status === 200) {
         dispatch(addUser(res?.data?.data));
         toast.success("Profile updated successfully!");
+        setIsLoadingP(false)
       }
     } catch (err) {
       toast.error("Failed to update profile. Please try again.");
       console.error(err);
+      setIsLoadingP(false)
     }
   };
 
   const uploadImage = async (e) => {
+    setIsLoading(true)
     e.preventDefault();
     if (!file) {
       toast.error("Please choose a file to upload.");
@@ -49,10 +57,12 @@ const EditProfile = ({ user }) => {
           withCredentials: true,
         }
       );
-      if(response.status === 200 ) toast.success(response.data.message);
+      // console.log("response : ", response)
+      if (response.status === 200) {toast.success(response.data.message);setIsLoading(false)}
     } catch (error) {
       toast.error("Error uploading file. Please try again.");
       console.error("There was an error uploading the file!", error);
+      setIsLoading(false)
     }
   };
 
@@ -65,7 +75,7 @@ const EditProfile = ({ user }) => {
       <div className="md:flex justify-center">
         <div className="relative flex flex-col justify-center md:h-screen overflow-hidden mx-2">
           <div
-            className="w-full p-6 m-auto bg-base-200 mt-2 rounded-md shadow-md lg:max-w-lg border border-fuchsia-900"
+            className="w-full p-6 m-auto bg-base-200 mt-2 rounded-xl shadow-md lg:max-w-lg border border-fuchsia-900"
             onSubmit={(e) => e.preventDefault()}
           >
             <h1 className="text-3xl font-semibold text-center text-purple-700 pb-4">
@@ -93,22 +103,27 @@ const EditProfile = ({ user }) => {
                   value={about}
                   onChange={(e) => setAbout(e.target.value)}
                 />
-                <div className="flex">
+                <div className="flex w-full justify-between">
                   <input
                     type="file"
                     className="file-input file-input-bordered w-full max-w-xs"
                     name="profileImage"
                     onChange={(e) => setFile(e?.target?.files[0])}
                   />
-                  {file && (
-                    <button
-                      className="btn btn-primary"
-                      encType="multipart/form-data"
-                      onClick={(e) => uploadImage(e)}
-                    >
-                      Upload
-                    </button>
-                  )}
+                  {file &&
+                    (!isLoading ? (
+                      <button
+                        className="btn btn-primary"
+                        encType="multipart/form-data"
+                        onClick={(e) => uploadImage(e)}
+                      >
+                        Upload
+                      </button>
+                    ) : (
+                      <button className="btn btn-primary">
+                        <span className="loading loading-spinner loading-md"></span>
+                      </button>
+                    ))}
                 </div>
               </div>
               <div className="dropdown dropdown-hover">
@@ -133,15 +148,21 @@ const EditProfile = ({ user }) => {
               </div>
 
               <div className="justify-center flex">
-                <button className="btn btn-primary" onClick={saveProfile}>
-                  Save Profile
-                </button>
+                {!isLoadingP ? (
+                  <button className="btn btn-primary" onClick={saveProfile}>
+                    Save Profile
+                  </button>
+                ) : (
+                  <button className="btn btn-primary">
+                    <span className="loading loading-spinner loading-md"></span>
+                  </button>
+                )}
               </div>
             </form>
           </div>
         </div>
         <div className="mx-2">
-          <UserCard user={{ firstName, lastName, about, gender }} />
+          <UserCard user={{ firstName, lastName, about, gender, file }} />
         </div>
       </div>
       <ToastContainer position="bottom-right" autoClose={3000} />

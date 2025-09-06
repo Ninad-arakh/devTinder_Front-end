@@ -15,6 +15,7 @@ const Feed = () => {
   const getfeed = async () => {
     if (feed) return;
     const res = await axios.get(BASE_URL + "feed/", { withCredentials: true });
+    // console.log("feed : ", res.data.users)
     if(res.status === 200) dispatch(addToFeed(res.data.users));
   };
 
@@ -34,6 +35,7 @@ const Feed = () => {
       </div>
     );
   }
+  // console.log("feed  : ", feed)
 
   return (
     feed && (

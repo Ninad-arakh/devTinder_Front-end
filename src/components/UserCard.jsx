@@ -4,16 +4,18 @@ import { BASE_URL } from "../utils/constants";
 import { useDispatch } from "react-redux";
 import { removeFromFeed } from "../utils/feedSlice";
 import { motion } from "framer-motion";
+import dummyProfile from "../assets/dummy.jpeg";
 
 const UserCard = ({ user }) => {
   const dispatch = useDispatch();
-  const { firstName, lastName, photoUrl, gender, about } = user;
+  const { firstName, lastName, gender, about } = user;
   const [swipeDirection, setSwipeDirection] = useState(null);
-    const screenWidth = window.screen.width;
+  const screenWidth = window.screen.width;
   let isScreen;
   if (screenWidth <= 640) {
     isScreen = true;
   }
+  console.log("profileUrl : ", user);
 
   const handleSendReq = async (status, _id) => {
     setSwipeDirection(status === "ignored" ? "left" : "right");
@@ -32,12 +34,26 @@ const UserCard = ({ user }) => {
 
   const cardVariants = {
     initial: { x: 0, opacity: 1, rotate: 0 },
-    swipeLeft: { x: "-120%", opacity: 0, rotate: -10, transition: { duration: 0.2, ease: "easeInOut"  } },
-    swipeRight: { x: "120%", opacity: 0, rotate: 10, transition: { duration: 0.2, ease: "easeInOut"  } },
+    swipeLeft: {
+      x: "-120%",
+      opacity: 0,
+      rotate: -10,
+      transition: { duration: 0.2, ease: "easeInOut" },
+    },
+    swipeRight: {
+      x: "120%",
+      opacity: 0,
+      rotate: 10,
+      transition: { duration: 0.2, ease: "easeInOut" },
+    },
   };
 
   return (
-    <div className={`flex justify-center m-2 cursor-pointer ${isScreen?"mt-2":"mt-2"} scrollbar-hide overflow-hidden`}>
+    <div
+      className={`flex justify-center m-2 cursor-pointer ${
+        isScreen ? "mt-2" : "mt-2"
+      } scrollbar-hide overflow-hidden`}
+    >
       <motion.div
         className="card bg-base-200 w-96 shadow-xl h-[35rem] border border-fuchsia-900"
         variants={cardVariants}
@@ -51,14 +67,18 @@ const UserCard = ({ user }) => {
         }
       >
         <figure>
-          {photoUrl && (
-            <img
-              // src={BASE_URL + photoUrl?.filePath}
-              src="https://wallpapergod.com/images/hd/aesthetic-iphone-1125X2436-wallpaper-6d965l1ahs548e1w.jpeg"
-              alt="userImage"
-              className="hover:scale-105 transition-transform duration-300"
-            />
-          )}
+          <img
+            // src={BASE_URL + photoUrl?.filePath}
+            src={
+              !user.photoUrl && !user.file
+                ? dummyProfile
+                : user?.photoUrl
+                ? user?.photoUrl
+                : user?.file
+            }
+            alt="userImage"
+            className="hover:scale-105 transition-transform duration-300"
+          />
         </figure>
         <div className="card-body">
           <div className="mb-2 ">
