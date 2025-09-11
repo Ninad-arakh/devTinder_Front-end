@@ -45,12 +45,12 @@ const Requests = () => {
           connection.fromUserId;
         return (
           <div key={_id} className=" flex justify-center ">
-            <div className="flex justify-around bg-base-200 rounded-lg md:w-6/12 my-2 items-center ">
+            <div className="flex justify-around bg-base-200 rounded-lg md:w-6/12 my-2 items-center border py-4 px-2 border-gray-600 shadow-lg">
               <div>
                 {photoUrl && (
                   <img
                     alt="profile"
-                    src={BASE_URL+photoUrl?.filePath}
+                    src={photoUrl}
                     className="w-32 h-32 rounded-full  "
                   />
                 )}

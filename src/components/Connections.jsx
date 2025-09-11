@@ -40,28 +40,28 @@ const Connections = () => {
           connection;
         return (
           <div key={_id} className=" flex justify-center ">
-            <div className="flex justify-around bg-base-200 rounded-lg md:w-6/12 my-2 items-center ">
-              <div>
+            <div className="flex justify-around bg-base-200 rounded-lg md:w-6/12 my-2 items-center border border-gray-600 shadow-lg px-2">
+              <div className="">
                 {photoUrl  && (
                   <img
                     alt="profile"
-                    src={BASE_URL+photoUrl?.filePath}
+                    src={photoUrl}
                     className="w-32 h-32 rounded-full  "
                   />
                 )}
-              </div>
-              <div className="w-6/12 ">
+              </div> 
+              <div className="w-6/12 flex flex-col mt-[4vh] gap-1">
                 <h2 className="font-bold uppercase text-white">
                   {firstName + " " + lastName}
                 </h2>
                 {gender && <p>{gender}</p>}
-                <p className="h-32 overflow-y-scroll ">{about}</p>
+                <p className="h-32 overflow-y-scroll scrollbar-hide">{about}</p>
               </div>
-              <div className="flex flex-col">
-                <button className="btn btn-outline btn-secondary m-1">
+              <div className="flex flex-col gap-3">
+                <button className="btn btn-outline btn-secondary  w-full">
                   View Profile
                 </button>
-                <Link to={"/chat/" + _id}><button className="btn btn-outline btn-info m-1">
+                <Link to={"/chat/" + _id}><button className="btn btn-outline btn-info  w-full">
                   Message
                 </button></Link>
               </div>
