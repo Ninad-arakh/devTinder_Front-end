@@ -5,6 +5,7 @@ import { BASE_URL } from "../utils/constants";
 import axios from "axios";
 import { addToFeed } from "../utils/feedSlice";
 import UserCard from "./UserCard";
+import { motion } from "framer-motion";
 
 const Feed = () => {
   const isUser = useSelector((store) => store.user);
@@ -15,8 +16,7 @@ const Feed = () => {
   const getfeed = async () => {
     if (feed) return;
     const res = await axios.get(BASE_URL + "feed/", { withCredentials: true });
-    // console.log("feed : ", res.data.users)
-    if(res.status === 200) dispatch(addToFeed(res.data.users));
+    if (res.status === 200) dispatch(addToFeed(res.data.users));
   };
 
   useEffect(() => {
@@ -26,20 +26,26 @@ const Feed = () => {
     if (!feed) getfeed();
   }, []);
 
-  if (!feed) return;
+  if (!feed) return null;
 
   if (feed.length === 0) {
     return (
-      <div className="flex justify-center mt-4 ">
-        <h2>No more peoples are on this platform yet!</h2>
+      <div className="flex justify-center mt-10">
+        <motion.h2
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="text-white text-lg font-semibold bg-white/20 px-4 py-2 rounded-xl backdrop-blur-lg shadow-lg"
+        >
+          🚀 No more people are on this platform yet!
+        </motion.h2>
       </div>
     );
   }
-  // console.log("feed  : ", feed)
 
   return (
     feed && (
-      <div>
+      <div className="flex justify-center items-center min-h-[80vh]">
         <UserCard user={feed[0]} />
       </div>
     )

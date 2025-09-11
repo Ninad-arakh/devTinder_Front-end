@@ -6,6 +6,7 @@ import { useDispatch } from "react-redux";
 import { addUser } from "../utils/userSlice";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { motion } from "framer-motion";
 
 const EditProfile = ({ user }) => {
   const [firstName, setFirstName] = useState(user?.firstName || "");
@@ -17,10 +18,8 @@ const EditProfile = ({ user }) => {
   const [isLoadingP, setIsLoadingP] = useState(false);
   const dispatch = useDispatch();
 
-  // console.log("user : ", user )
-
   const saveProfile = async () => {
-    setIsLoadingP(true)
+    setIsLoadingP(true);
     try {
       const res = await axios.patch(
         BASE_URL + "profile/update/",
@@ -30,17 +29,17 @@ const EditProfile = ({ user }) => {
       if (res.status === 200) {
         dispatch(addUser(res?.data?.data));
         toast.success("Profile updated successfully!");
-        setIsLoadingP(false)
       }
     } catch (err) {
       toast.error("Failed to update profile. Please try again.");
       console.error(err);
-      setIsLoadingP(false)
+    } finally {
+      setIsLoadingP(false);
     }
   };
 
   const uploadImage = async (e) => {
-    setIsLoading(true)
+    setIsLoading(true);
     e.preventDefault();
     if (!file) {
       toast.error("Please choose a file to upload.");
@@ -53,118 +52,136 @@ const EditProfile = ({ user }) => {
       const response = await axios.post(
         BASE_URL + "profile/uploadImage/",
         formData,
-        {
-          withCredentials: true,
-        }
+        { withCredentials: true }
       );
-      // console.log("response : ", response)
-      if (response.status === 200) {toast.success(response.data.message);setIsLoading(false)}
+      if (response.status === 200) {
+        toast.success(response.data.message);
+      }
     } catch (error) {
       toast.error("Error uploading file. Please try again.");
-      console.error("There was an error uploading the file!", error);
-      setIsLoading(false)
+      console.error(error);
+    } finally {
+      setIsLoading(false);
     }
-  };
-
-  const handleGender = (value) => {
-    setGender(value);
   };
 
   return (
     <>
-      <div className="md:flex justify-center">
-        <div className="relative flex flex-col justify-center md:h-screen overflow-hidden mx-2">
-          <div
-            className="w-full p-6 m-auto bg-base-200 mt-2 rounded-xl shadow-md lg:max-w-lg border border-fuchsia-900"
-            onSubmit={(e) => e.preventDefault()}
-          >
-            <h1 className="text-3xl font-semibold text-center text-purple-700 pb-4">
-              Update Profile
-            </h1>
-            <form className="space-y-4">
-              <div>
-                <input
-                  type="text"
-                  value={firstName}
-                  placeholder="First Name"
-                  className="w-full input input-bordered input-primary my-1"
-                  onChange={(e) => setFirstName(e.target.value)}
-                />
-                <input
-                  type="text"
-                  value={lastName}
-                  placeholder="Last Name"
-                  className="w-full input input-bordered input-primary my-1"
-                  onChange={(e) => setLastName(e.target.value)}
-                />
-                <textarea
-                  className="textarea textarea-primary my-1 h-[10rem] w-full"
-                  placeholder="Bio"
-                  value={about}
-                  onChange={(e) => setAbout(e.target.value)}
-                />
-                <div className="flex w-full justify-between">
-                  <input
-                    type="file"
-                    className="file-input file-input-bordered w-full max-w-xs"
-                    name="profileImage"
-                    onChange={(e) => setFile(e?.target?.files[0])}
-                  />
-                  {file &&
-                    (!isLoading ? (
-                      <button
-                        className="btn btn-primary"
-                        encType="multipart/form-data"
-                        onClick={(e) => uploadImage(e)}
-                      >
-                        Upload
-                      </button>
-                    ) : (
-                      <button className="btn btn-primary">
-                        <span className="loading loading-spinner loading-md"></span>
-                      </button>
-                    ))}
-                </div>
-              </div>
-              <div className="dropdown dropdown-hover">
-                <div
-                  tabIndex={0}
-                  role="button"
-                  className="btn m-1 hover:bg-slate-600 hover:text-white bg-slate-600"
-                >
-                  Gender
-                </div>
-                <ul
-                  tabIndex={0}
-                  className="dropdown-content menu rounded-box z-[1] w-52 p-2 shadow"
-                >
-                  <li>
-                    <a onClick={() => handleGender("male")}>Male</a>
-                  </li>
-                  <li>
-                    <a onClick={() => handleGender("female")}>Female</a>
-                  </li>
-                </ul>
-              </div>
+      <div className="min-h-screen bg-gradient-to-tr from-pink-400 via-pink-500 to-purple-500 flex flex-col md:flex-row justify-center items-center p-6">
+        
+        {/* Edit Profile Card */}
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="w-full max-w-lg p-8 rounded-2xl bg-white/10 backdrop-blur-xl shadow-lg border border-white/20 mx-2"
+        >
+          <h1 className="text-3xl font-bold text-center text-white mb-6 drop-shadow-md">
+            Update Profile
+          </h1>
 
-              <div className="justify-center flex">
-                {!isLoadingP ? (
-                  <button className="btn btn-primary" onClick={saveProfile}>
-                    Save Profile
-                  </button>
+          <form className="space-y-4">
+            <input
+              type="text"
+              value={firstName}
+              placeholder="First Name"
+              className="input input-bordered w-full rounded-xl bg-white/20 text-white placeholder-gray-300 focus:ring-2 focus:ring-pink-400"
+              onChange={(e) => setFirstName(e.target.value)}
+            />
+
+            <input
+              type="text"
+              value={lastName}
+              placeholder="Last Name"
+              className="input input-bordered w-full rounded-xl bg-white/20 text-white placeholder-gray-300 focus:ring-2 focus:ring-pink-400"
+              onChange={(e) => setLastName(e.target.value)}
+            />
+
+            <textarea
+              className="textarea textarea-bordered w-full rounded-xl bg-white/20 text-white placeholder-gray-300 focus:ring-2 focus:ring-purple-400"
+              placeholder="Bio"
+              value={about}
+              onChange={(e) => setAbout(e.target.value)}
+            />
+
+            {/* File Upload */}
+            <div className="flex items-center gap-3">
+              <input
+                type="file"
+                className="file-input file-input-bordered file-input-sm rounded-xl w-full bg-white/20 text-white"
+                name="profileImage"
+                onChange={(e) => setFile(e?.target?.files[0])}
+              />
+              {file &&
+                (!isLoading ? (
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="btn bg-gradient-to-r from-pink-400 to-purple-500 border-none text-white shadow-lg"
+                    onClick={(e) => uploadImage(e)}
+                  >
+                    Upload
+                  </motion.button>
                 ) : (
-                  <button className="btn btn-primary">
+                  <button className="btn bg-gradient-to-r from-pink-400 to-purple-500 border-none text-white shadow-lg">
                     <span className="loading loading-spinner loading-md"></span>
                   </button>
-                )}
+                ))}
+            </div>
+
+            {/* Gender Dropdown */}
+            <div className="dropdown dropdown-hover">
+              <div
+                tabIndex={0}
+                role="button"
+                className="btn w-full bg-purple-500/70 border-none text-white rounded-xl hover:scale-105 transition"
+              >
+                {gender ? gender : "Select Gender"}
               </div>
-            </form>
-          </div>
-        </div>
-        <div className="mx-2">
+              <ul
+                tabIndex={0}
+                className="dropdown-content menu bg-white/20 backdrop-blur-lg rounded-xl shadow-lg text-white"
+              >
+                <li>
+                  <a onClick={() => setGender("male")}>Male</a>
+                </li>
+                <li>
+                  <a onClick={() => setGender("female")}>Female</a>
+                </li>
+              </ul>
+            </div>
+
+            {/* Save Profile */}
+            <div className="flex justify-center">
+              {!isLoadingP ? (
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="btn w-full bg-gradient-to-r from-pink-400 to-purple-500 text-white border-none shadow-lg"
+                  onClick={saveProfile}
+                >
+                  Save Profile
+                </motion.button>
+              ) : (
+                <button className="btn w-full bg-gradient-to-r from-pink-400 to-purple-500 text-white border-none shadow-lg">
+                  <span className="loading loading-spinner loading-md"></span>
+                </button>
+              )}
+            </div>
+          </form>
+        </motion.div>
+
+        {/* Profile Preview */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          className="mt-6 md:mt-0 mx-2"
+        >
           <UserCard user={{ firstName, lastName, about, gender, file }} />
-        </div>
+        </motion.div>
       </div>
+
       <ToastContainer position="bottom-right" autoClose={3000} />
     </>
   );
