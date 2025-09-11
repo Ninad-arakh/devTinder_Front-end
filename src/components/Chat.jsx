@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { createSearchParams, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import createSocketConnection from "../utils/socket";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import { BASE_URL } from "../utils/constants";
 import { timeAgo } from "../utils/timeAgo";
+import { motion, AnimatePresence } from "framer-motion";
 
 const Chat = () => {
   const { toUserId } = useParams();
@@ -49,7 +50,10 @@ const Chat = () => {
     socket.emit("joinChat", { firstName: user?.firstName, userId, toUserId });
 
     socket.on("messageRecieved", ({ firstName, lastName, text }) => {
-      setMessages((messages) => [...messages, { firstName, lastName, text }]);
+      setMessages((messages) => [
+        ...messages,
+        { firstName, lastName, text, createdAt: new Date().toISOString() },
+      ]);
     });
 
     return () => {
@@ -69,67 +73,89 @@ const Chat = () => {
     });
     setNewMessage("");
   };
-  if (!user) return;
+
+  if (!user) return null;
+
   return (
-    <div className="mt-2 h-[100vh]">
-      <div className="border border-purple-800 rounded-lg p-4 md:w-3/6 mx-auto flex flex-col h-[90%]">
+    <div className="mt-2 h-[100vh] flex flex-col bg-gradient-to-br from-pink-500 via-pink-600 to-purple-700">
+      <div className="border border-white/20 shadow-2xl rounded-2xl p-4 md:w-3/6 w-full mx-auto flex flex-col h-[90%] backdrop-blur-lg bg-white/10">
         {/* messages */}
-        <div className="flex-1 overflow-y-scroll ">
-          {messages.map((msg, index) => {
-            return (
-              <div
+        <div className="flex-1 overflow-y-scroll space-y-4 p-2">
+          <AnimatePresence>
+            {messages.map((msg, index) => (
+              <motion.div
                 key={index}
+                initial={{ opacity: 0, y: 20, scale: 0.95 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.3 }}
                 className={
                   user?.firstName === msg?.firstName
-                    ? "chat chat-end "
-                    : "chat chat-start "
+                    ? "chat chat-end"
+                    : "chat chat-start"
                 }
               >
                 <div className="chat-image avatar">
-                  <div className="w-10 rounded-full">
+                  <div className="w-10 rounded-full ring ring-pink-400 ring-offset-2">
                     <img
-                      alt="Tailwind CSS chat bubble component"
+                      alt="user avatar"
                       src={
-                        msg.photoUrl
+                        user?.firstName === msg?.firstName
+                          ? msg.photoUrl
+                            ? msg.photoUrl
+                            : user.photoUrl
+                          : msg.photoUrl
                           ? msg.photoUrl
                           : "https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
                       }
                     />
                   </div>
                 </div>
-                <div className="chat-header ">
-                  {/* <h1>{`${msg?.firstName}  `}</h1> */}
-                  <time className="text-xs leading-tight opacity-50">
+                <div className="chat-header flex items-center gap-2">
+                  <span className="font-semibold text-pink-200">
+                    {msg.firstName}
+                  </span>
+                  <time className="text-xs text-white/70">
                     {timeAgo(msg.createdAt)}
                   </time>
                 </div>
-                <div className="">
-                  <h2 className="chat-bubble text-white">{msg.text}</h2>
-                  {/* <h2 className="chat-footer opacity-50">Delivered</h2> */}
-                </div>
-              </div>
-            );
-          })}
+                <motion.div
+                  whileHover={{ scale: 1.02 }}
+                  className={`chat-bubble text-white shadow-md backdrop-blur-md ${
+                    user?.firstName === msg?.firstName
+                      ? "bg-gradient-to-r from-purple-600 to-pink-500"
+                      : "bg-white/20"
+                  }`}
+                >
+                  {msg.text}
+                </motion.div>
+              </motion.div>
+            ))}
+          </AnimatePresence>
         </div>
+
         {/* input box and send button */}
         <form
-          onSubmit={(e) => sendMessage(e)}
-          className=" flex px-2 justify-between items-center mt-20 bottom-1 "
+          onSubmit={sendMessage}
+          className="flex px-2 py-3 justify-between items-center border-t border-white/20 gap-2"
         >
           <input
             type="text"
-            placeholder="Type here"
-            className=" rounded-lg w-10/12 input input-primary"
+            placeholder="Type your message..."
+            className="rounded-xl w-10/12 px-4 py-2 bg-white/20 text-white placeholder-white/60 
+                       focus:outline-none focus:ring-2 focus:ring-pink-400 backdrop-blur-md"
             value={newMessage}
             onChange={(e) => setNewMessage(e.target.value)}
             required
           />
-          <button
-            className="btn btn-active btn-accent hover:scale-110"
-            onClick={(e) => sendMessage(e)}
+          <motion.button
+            whileTap={{ scale: 0.9 }}
+            whileHover={{ scale: 1.1 }}
+            className="px-5 py-2 rounded-xl bg-gradient-to-r from-pink-500 to-purple-600 
+                       text-white font-medium shadow-lg"
           >
             Send
-          </button>
+          </motion.button>
         </form>
       </div>
     </div>
