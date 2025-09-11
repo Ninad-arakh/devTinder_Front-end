@@ -7,6 +7,7 @@ import { addUser } from "../utils/userSlice";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 
 const EditProfile = ({ user }) => {
   const [firstName, setFirstName] = useState(user?.firstName || "");
@@ -17,6 +18,7 @@ const EditProfile = ({ user }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingP, setIsLoadingP] = useState(false);
   const dispatch = useDispatch();
+  const navigate = useNavigate()
 
   const saveProfile = async () => {
     setIsLoadingP(true);
@@ -29,6 +31,7 @@ const EditProfile = ({ user }) => {
       if (res.status === 200) {
         dispatch(addUser(res?.data?.data));
         toast.success("Profile updated successfully!");
+        navigate("/")
       }
     } catch (err) {
       toast.error("Failed to update profile. Please try again.");

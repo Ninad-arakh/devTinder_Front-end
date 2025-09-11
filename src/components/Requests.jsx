@@ -2,23 +2,18 @@ import axios from "axios";
 import React, { useEffect } from "react";
 import { BASE_URL } from "../utils/constants";
 import { useDispatch, useSelector } from "react-redux";
-import { addToRequests, removeRequests } from "../utils/requestsSlice";
+import {  removeRequests } from "../utils/requestsSlice";
 import { motion } from "framer-motion";
+import useGetRequests from "../hooks/useGetRequests";
 
 const Requests = () => {
   const dispatch = useDispatch();
   const req = useSelector((store) => store.requests);
 
-  const getRequests = async () => {
-    try {
-      const res = await axios.get(BASE_URL + "user/requests/reviewed/", {
-        withCredentials: true,
-      });
-      if (res.status === 200) dispatch(addToRequests(res?.data?.data));
-    } catch (err) {
-      console.error(err);
-    }
-  };
+  useGetRequests();
+  // const getRequests = async () => {
+  //   useGetRequests();
+  // };
 
   const statusHandler = async (status, _id) => {
     try {
@@ -34,7 +29,7 @@ const Requests = () => {
   };
 
   useEffect(() => {
-    if (!req) getRequests();
+    // if (!req) getRequests();
   }, []);
 
   if (!req) return null;
@@ -48,7 +43,7 @@ const Requests = () => {
                 transition={{ duration: 0.5 }}
                 className="text-white text-lg font-semibold bg-white/20 px-4 py-2 rounded-xl backdrop-blur-lg shadow-lg h-12 "
               >
-                You don't have any requests yet!
+                You don't have any new requests!
               </motion.h2>
             </div>
     );
@@ -70,7 +65,10 @@ const Requests = () => {
             whileHover={{ scale: 1.02 }}
             className="flex justify-center"
           >
-            <div className="flex justify-between items-center bg-base-200 rounded-2xl md:w-7/12 w-11/12 p-4 border border-gray-700 shadow-lg hover:shadow-xl transition-all duration-300">
+            <div className="flex flex-col md:flex-row items-center justify-between 
+                       bg-white/10 backdrop-blur-xl border border-fuchsia-500/40 
+                       rounded-2xl shadow-lg p-5 md:w-8/12 mx-auto hover:shadow-fuchsia-500/30
+                       transition-all duration-300">
               {/* Profile Image */}
               <div className="flex-shrink-0">
                 {photoUrl && (

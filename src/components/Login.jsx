@@ -8,6 +8,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { FaRegEyeSlash, FaRegEye } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
+import useGetRequests from "../hooks/useGetRequests.js";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -19,6 +20,10 @@ const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const isUser = useSelector((store) => store.user);
+
+  const screenW = window.screen.width
+  let isSmallWin;
+  if(screenW <= 767) isSmallWin = true;
 
   const loginHnadler = async () => {
     try {
@@ -47,6 +52,7 @@ const Login = () => {
       if (res.status === 200) {
         toast.success("Signup success.");
         dispatch(addUser(res.data.data));
+        useGetRequests();
         navigate("/profile");
       }
     } catch (err) {
@@ -62,14 +68,14 @@ const Login = () => {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-purple-900 via-gray-900 to-black">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-purple-900 via-gray-900 to-black ">
       <ToastContainer position="bottom-right" autoClose={3000} />
       <motion.div
         initial={{ opacity: 0, y: 30, scale: 0.95 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
         transition={{ duration: 0.5, ease: "easeOut" }}
-        className="w-full max-w-lg p-8 mx-2 bg-gradient-to-br from-gray-900/80 to-purple-800/80 
-                   backdrop-blur-lg rounded-2xl shadow-2xl border border-purple-600/50"
+        className={`w-full max-w-lg p-8 mx-2 bg-gradient-to-br from-gray-900/80 to-purple-800/80 
+                   backdrop-blur-lg rounded-2xl shadow-2xl border border-purple-600/50 `}
       >
         {/* Title */}
         <motion.h1
@@ -77,14 +83,14 @@ const Login = () => {
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4 }}
-          className="text-3xl font-bold text-center text-purple-200 mb-6"
+          className="text-3xl font-bold text-center text-purple-200 mb-6 "
         >
           {isLogin ? "Login" : "Sign Up"}
         </motion.h1>
 
         {/* Form */}
         <form
-          className="space-y-5"
+          className="space-y-5 "
           onSubmit={(e) => e.preventDefault()}
         >
           <AnimatePresence>

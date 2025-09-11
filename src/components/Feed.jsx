@@ -45,7 +45,7 @@ const Feed = () => {
 
   return (
     feed && (
-      <div className="flex justify-center items-center min-h-[80vh] bg-gradient-to-b from-purple-900 via-gray-900 to-black">
+      <div className="flex  justify-center items-center min-h-[80vh] bg-gradient-to-b from-purple-900 via-gray-900 to-black">
         <UserCard user={feed[0]} />
       </div>
     )

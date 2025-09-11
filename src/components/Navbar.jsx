@@ -7,12 +7,14 @@ import { removeUser } from "../utils/userSlice";
 import tinder from "../../icons-tinder.png";
 import { motion, AnimatePresence } from "framer-motion";
 import { Bell, MessageCircle } from "lucide-react"; // ✅ icons
+import useGetRequests from "../hooks/useGetRequests";
 
 const Navbar = () => {
   const user = useSelector((store) => store.user);
   const requests = useSelector((store) => store.requests); // ✅ get requests from redux
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  useGetRequests()
 
   const logoutHandler = async () => {
     try {
