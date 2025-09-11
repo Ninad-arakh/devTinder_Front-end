@@ -6,9 +6,11 @@ import axios from "axios";
 import { removeUser } from "../utils/userSlice";
 import tinder from "../../icons-tinder.png";
 import { motion, AnimatePresence } from "framer-motion";
+import { Bell, MessageCircle } from "lucide-react"; // ✅ icons
 
 const Navbar = () => {
   const user = useSelector((store) => store.user);
+  const requests = useSelector((store) => store.requests); // ✅ get requests from redux
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -54,7 +56,27 @@ const Navbar = () => {
 
       {/* User Menu */}
       {user && (
-        <div className="flex-none pr-3">
+        <div className="flex items-center gap-4 pr-3">
+          {/* 🔔 Notification Bell */}
+          <Link to="/requests" className="relative">
+            <Bell className="w-6 h-6 text-white hover:text-pink-400 transition-colors" />
+            {requests?.length > 0 && (
+              <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-xs text-white font-bold">
+                {requests.length}
+              </span>
+            )}
+          </Link>
+
+          {/* 💬 Messages */}
+          <Link to="/connections" className="relative">
+            <MessageCircle className="w-6 h-6 text-white hover:text-pink-400 transition-colors" />
+            {/* Example: If you want message count later */}
+            {/* <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-blue-500 text-xs text-white font-bold">
+              2
+            </span> */}
+          </Link>
+
+          {/* Avatar Dropdown */}
           <div className="dropdown dropdown-end">
             <motion.div
               tabIndex={0}
@@ -83,9 +105,7 @@ const Navbar = () => {
                   bg-gradient-to-br from-gray-900/90 to-purple-800/90 backdrop-blur-md text-white z-[1]"
               >
                 <motion.li whileHover={{ x: 5 }}>
-                  <Link to="/profile" className="justify-between">
-                    Profile
-                  </Link>
+                  <Link to="/profile">Profile</Link>
                 </motion.li>
                 <motion.li whileHover={{ x: 5 }}>
                   <Link to="/connections">My Connections</Link>
