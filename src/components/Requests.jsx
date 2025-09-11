@@ -41,7 +41,7 @@ const Requests = () => {
 
   if (req.length === 0) {
     return (
-      <div className="flex justify-center pt-10  h-screen bg-gradient-to-br from-pink-500 via-pink-600 to-purple-700">
+      <div className="flex justify-center pt-10  h-screen bg-gradient-to-b from-purple-900 via-gray-900 to-black">
               <motion.h2
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -55,7 +55,7 @@ const Requests = () => {
   }
 
   return (
-    <div className="flex h-screen flex-col gap-4 pt-4 bg-gradient-to-br from-pink-500 via-pink-600 to-purple-700">
+    <div className="flex h-screen flex-col gap-4 pt-4 bg-gradient-to-b from-purple-900 via-gray-900 to-black">
       {req.map((connection, index) => {
         const reqId = connection._id;
         const { _id, firstName, lastName, about, photoUrl, gender } =

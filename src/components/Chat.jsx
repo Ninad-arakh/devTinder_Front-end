@@ -77,7 +77,7 @@ const Chat = () => {
   if (!user) return null;
 
   return (
-    <div className="pt-2 h-[100vh] flex flex-col bg-gradient-to-br from-pink-500 via-pink-600 to-purple-700">
+    <div className="pt-2 h-[100vh] flex flex-col bg-gradient-to-b from-purple-900 via-gray-900 to-black">
       <div className="border border-white/20 shadow-2xl rounded-2xl p-4 md:w-3/6 w-full mx-auto flex flex-col h-[90%] backdrop-blur-lg bg-white/10">
         {/* messages */}
         <div className="flex-1 overflow-y-scroll space-y-4 p-2">

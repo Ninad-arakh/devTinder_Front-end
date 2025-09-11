@@ -44,7 +44,7 @@ const UserCard = ({ user }) => {
 
   return (
     <motion.div
-      className="w-96 h-[35rem] rounded-2xl shadow-lg border border-white/20 backdrop-blur-xl bg-white/10 overflow-hidden my-3 bg-gradient-to-br from-pink-500 via-pink-600 to-purple-700"
+      className="w-96 h-[35rem] rounded-2xl shadow-lg border border-white/20 backdrop-blur-xl bg-white/10 overflow-hidden my-3 bg-gradient-to-b from-purple-900 via-gray-900 to-black"
       variants={cardVariants}
       initial="initial"
       animate={

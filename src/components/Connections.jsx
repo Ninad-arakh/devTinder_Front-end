@@ -29,7 +29,7 @@ const Connections = () => {
 
   if (connections.length === 0) {
     return (
-      <div className="flex justify-center pt-10  h-screen bg-gradient-to-br from-pink-500 via-pink-600 to-purple-700">
+      <div className="flex justify-center pt-10  h-screen bg-gradient-to-b from-purple-900 via-gray-900 to-black">
               <motion.h2
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -43,7 +43,7 @@ const Connections = () => {
   }
 
   return (
-    <div className="space-y-6 px-4 md:px-10 h-screen py-3 bg-gradient-to-br from-pink-500 via-pink-600 to-purple-700">
+    <div className="space-y-6 px-4 md:px-10 h-screen py-3 bg-gradient-to-b from-purple-900 via-gray-900 to-black">
       {connections.map((connection, idx) => {
         const { _id, firstName, lastName, about, photoUrl, gender } = connection;
 

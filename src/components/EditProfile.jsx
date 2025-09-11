@@ -67,7 +67,7 @@ const EditProfile = ({ user }) => {
 
   return (
     <>
-      <div className="min-h-screen bg-gradient-to-tr from-pink-400 via-pink-500 to-purple-500 flex flex-col md:flex-row justify-center items-center p-6">
+      <div className="min-h-screen bg-gradient-to-b from-purple-900 via-gray-900 to-black flex flex-col md:flex-row justify-center items-center p-6">
         
         {/* Edit Profile Card */}
         <motion.div

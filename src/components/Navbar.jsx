@@ -39,7 +39,7 @@ const Navbar = () => {
       <div className="flex-1">
         <Link
           to="/"
-          className="flex items-center gap-2 text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-pink-400 to-purple-300 hover:scale-105 transition-transform duration-200"
+          className="flex items-center gap-2 text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-pink-400 to-purple-200 hover:scale-105 transition-transform duration-200"
         >
           <motion.img
             src={tinder}

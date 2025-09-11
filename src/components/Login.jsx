@@ -62,7 +62,7 @@ const Login = () => {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-tr from-pink-600 via-purple-800 to-black">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-purple-900 via-gray-900 to-black">
       <ToastContainer position="bottom-right" autoClose={3000} />
       <motion.div
         initial={{ opacity: 0, y: 30, scale: 0.95 }}
