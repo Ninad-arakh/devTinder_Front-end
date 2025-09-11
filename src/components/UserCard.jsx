@@ -44,7 +44,7 @@ const UserCard = ({ user }) => {
 
   return (
     <motion.div
-      className="w-96 h-[35rem] rounded-2xl shadow-lg border border-white/20 backdrop-blur-xl bg-white/10 overflow-hidden"
+      className="w-96 h-[35rem] rounded-2xl shadow-lg border border-white/20 backdrop-blur-xl bg-white/10 overflow-hidden my-3 bg-gradient-to-br from-pink-500 via-pink-600 to-purple-700"
       variants={cardVariants}
       initial="initial"
       animate={
@@ -67,12 +67,12 @@ const UserCard = ({ user }) => {
               : user?.file
           }
           alt="user"
-          className="w-full h-full object-cover rounded-t-2xl transition-transform duration-500 hover:scale-110"
+          className="w-full h-full object-cover rounded-t-2xl transition-transform duration-500 hover:scale-110 "
         />
       </div>
 
       {/* Card Body */}
-      <div className="p-4 flex flex-col justify-between h-[calc(100%-14rem)]">
+      <div className="p-4 flex flex-col justify-around h-[calc(100%-14rem)] ">
         <div>
           {firstName && lastName && (
             <h2 className="text-xl font-bold text-white drop-shadow-md text-center">
@@ -85,7 +85,7 @@ const UserCard = ({ user }) => {
             </h3>
           )}
           {about && (
-            <p className="mt-3 text-sm text-white/80 bg-white/10 rounded-lg p-2 h-20 overflow-y-auto backdrop-blur-md">
+            <p className="mt-3 text-sm text-white/80 bg-white/10 rounded-lg p-2 h-28 overflow-y-auto backdrop-blur-md">
               {about}
             </p>
           )}

@@ -30,12 +30,12 @@ const Feed = () => {
 
   if (feed.length === 0) {
     return (
-      <div className="flex justify-center mt-10">
+      <div className="flex justify-center pt-10  h-screen bg-gradient-to-br from-pink-500 via-pink-600 to-purple-700">
         <motion.h2
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="text-white text-lg font-semibold bg-white/20 px-4 py-2 rounded-xl backdrop-blur-lg shadow-lg"
+          className="text-white text-lg font-semibold bg-white/20 px-4 py-2 rounded-xl backdrop-blur-lg shadow-lg h-12 "
         >
           🚀 No more people are on this platform yet!
         </motion.h2>
@@ -45,7 +45,7 @@ const Feed = () => {
 
   return (
     feed && (
-      <div className="flex justify-center items-center min-h-[80vh]">
+      <div className="flex justify-center items-center min-h-[80vh] bg-gradient-to-br from-pink-500 via-pink-600 to-purple-700">
         <UserCard user={feed[0]} />
       </div>
     )
