@@ -38,7 +38,7 @@ const Login = () => {
         navigate("/");
       }
     } catch (e) {
-      toast.error("Something went wrong ! " + e.response.data);
+      toast.error("Something went wrong ! " + e.response.data.ERROR);
     }
   };
 
@@ -57,7 +57,13 @@ const Login = () => {
       }
     } catch (err) {
       e.preventDefault();
-      toast.error("Something went wrong! ");
+      let duplicateEmail = `E11000 duplicate key error collection: devTinder.users index: email_1 dup key: { email: "${email}" }`
+      if(err.response.data.ERROR === duplicateEmail){
+        toast.error("This Email is already registered! Please use a different one.");
+      }
+      else{
+        toast.error(err.response.data.ERROR);
+      }
     }
   };
 

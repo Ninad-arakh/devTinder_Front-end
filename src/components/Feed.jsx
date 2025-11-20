@@ -13,6 +13,8 @@ const Feed = () => {
   const dispatch = useDispatch();
   const feed = useSelector((store) => store.feed);
 
+
+
   const getfeed = async () => {
     if (feed) return;
     const res = await axios.get(BASE_URL + "feed/", { withCredentials: true });
@@ -43,10 +45,12 @@ const Feed = () => {
     );
   }
 
+    const feedNo = Math.floor(Math.random() * feed.length)
+
   return (
     feed && (
-      <div className="flex  justify-center items-center min-h-[80vh] bg-gradient-to-b from-purple-900 via-gray-900 to-black">
-        <UserCard user={feed[0]} />
+      <div className="flex w-full overflow-hidden justify-center items-center min-h-[80vh] bg-gradient-to-b from-purple-900 via-gray-900 to-black">
+        <UserCard user={feed[feedNo]} />
       </div>
     )
   );

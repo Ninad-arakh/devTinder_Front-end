@@ -44,7 +44,7 @@ const UserCard = ({ user }) => {
 
   return (
     <motion.div
-      className="w-96 h-[35rem] rounded-2xl shadow-lg border border-white/20 backdrop-blur-xl bg-white/10 overflow-hidden my-3 bg-gradient-to-b from-purple-900 via-gray-900 to-black"
+      className="w-96 flex flex-col  h-[35rem] rounded-2xl shadow-lg border border-white/20 backdrop-blur-xl bg-white/10 overflow-hidden my-3 bg-gradient-to-b from-purple-900 via-gray-900 to-black"
       variants={cardVariants}
       initial="initial"
       animate={
@@ -57,7 +57,7 @@ const UserCard = ({ user }) => {
       whileHover={{ scale: 1.02 }}
     >
       {/* Profile Image */}
-      <div className="h-56 w-full overflow-hidden">
+      <div className="h-72 w-full overflow-hidden ">
         <img
           src={
             !user.photoUrl && !user.file
@@ -72,7 +72,7 @@ const UserCard = ({ user }) => {
       </div>
 
       {/* Card Body */}
-      <div className="p-4 flex flex-col justify-around h-[calc(100%-14rem)] ">
+      <div className="p-4 flex flex-col justify-around  h-[calc(100%-18rem)] ">
         <div>
           {firstName && lastName && (
             <h2 className="text-xl font-bold text-white drop-shadow-md text-center">
