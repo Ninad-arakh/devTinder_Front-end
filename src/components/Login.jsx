@@ -16,16 +16,22 @@ const Login = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [isLogin, setIsLogin] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [passwordShow, setPasswordShow] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const isUser = useSelector((store) => store.user);
 
-  const screenW = window.screen.width
+  const screenW = window.screen.width;
   let isSmallWin;
-  if(screenW <= 767) isSmallWin = true;
+  if (screenW <= 767) isSmallWin = true;
+
+  // const controller = new AbortController()
+  // const signal = controller.signal;
+  // const timeoutId = setTimeout(() => controller.abort(), 5000)
 
   const loginHnadler = async () => {
+    setIsLoading(true);
     try {
       const res = await axios.post(
         BASE_URL + "login/",
@@ -36,9 +42,11 @@ const Login = () => {
         dispatch(addUser(res.data.data));
         toast.success("Login Success");
         navigate("/");
+        setIsLoading(false)
       }
     } catch (e) {
       toast.error("Something went wrong ! " + e.response.data.ERROR);
+      setIsLoading(false)
     }
   };
 
@@ -54,15 +62,19 @@ const Login = () => {
         dispatch(addUser(res.data.data));
         useGetRequests();
         navigate("/profile");
+        setIsLoading(false)
       }
     } catch (err) {
       e.preventDefault();
-      let duplicateEmail = `E11000 duplicate key error collection: devTinder.users index: email_1 dup key: { email: "${email}" }`
-      if(err.response.data.ERROR === duplicateEmail){
-        toast.error("This Email is already registered! Please use a different one.");
-      }
-      else{
+      let duplicateEmail = `E11000 duplicate key error collection: devTinder.users index: email_1 dup key: { email: "${email}" }`;
+      if (err.response.data.ERROR === duplicateEmail) {
+        toast.error(
+          "This Email is already registered! Please use a different one."
+        );
+        setIsLoading(false)
+      } else {
         toast.error(err.response.data.ERROR);
+        setIsLoading(false)
       }
     }
   };
@@ -95,10 +107,7 @@ const Login = () => {
         </motion.h1>
 
         {/* Form */}
-        <form
-          className="space-y-5 "
-          onSubmit={(e) => e.preventDefault()}
-        >
+        <form className="space-y-5 " onSubmit={(e) => e.preventDefault()}>
           <AnimatePresence>
             {!isLogin && (
               <motion.div
@@ -186,16 +195,27 @@ const Login = () => {
           </p>
 
           {/* Submit Button */}
-          <div className="flex justify-center pt-4">
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="px-6 py-2 rounded-xl font-semibold 
-                         bg-gradient-to-r from-pink-500 to-purple-700 text-white shadow-lg"
-              onClick={(e) => (isLogin ? loginHnadler() : signUpHandler(e))}
-            >
-              {isLogin ? "Login" : "Sign Up"}
-            </motion.button>
+          <div className="flex justify-center pt-4  ">
+            {!isLoading ? (
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="px-6 py-2 rounded-xl font-semibold 
+                          bg-gradient-to-r from-pink-500 to-purple-700 text-white shadow-lg"
+                onClick={(e) => (isLogin ? loginHnadler() : signUpHandler(e))}
+              >
+                {isLogin ? "Login" : "Sign Up"}
+              </motion.button>
+            ) : (
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="px-8 py-2 rounded-xl font-semibold 
+                          bg-gradient-to-r from-pink-500 to-purple-700 text-white shadow-lg"
+              >
+                <div className="border-dashed border-4 w-6 h-6 rounded-full animate-spin"></div>
+              </motion.button>
+            )}
           </div>
         </form>
       </motion.div>
